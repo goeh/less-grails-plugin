@@ -15,13 +15,13 @@ grails.project.dependency.resolution = {
         grailsCentral()
     }
     plugins {
-        build ":resources:latest.integration"
         build(":release:latest.integration") {
             export = false
         }
+        compile ":resources:latest.integration"
     }
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes eg.
-        runtime 'org.mozilla:rhino:1.7R3'
+        runtime 'org.mozilla:rhino:1.7R4'
     }
 }
