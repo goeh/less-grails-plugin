@@ -21,12 +21,21 @@ class LessResourceMapper {
         File lessFile = resource.processedFile
         File cssFile = new File(lessFile.absolutePath + '.css')
 
+        if(paths.isEmpty()) {
+            def defaultPath = grailsApplication.config.grails.resources.less.default.importPath
+            if(defaultPath) {
+                addDefaultPath(defaultPath)
+            }
+        }
+
         def importPath = grailsApplication.parentContext.getResource(resource.originalUrl)?.file?.parentFile?.absolutePath
         if (importPath) {
             def order = resource.tagAttributes.order ?: 10
-            log.debug "Adding import path [${importPath}][order: ${order}] for resource [${resource}]"
-            paths << [path:importPath, order:order]
-            paths.sort {it.order}
+            if(! paths.find{it.path == importPath}) {
+                log.debug "Adding import path [${importPath}][order: ${order}] for resource [${resource}]"
+                paths << [path:importPath, order:order]
+                paths.sort {it.order}
+            }
         }
         
         try {
@@ -41,4 +50,22 @@ class LessResourceMapper {
         }
     }
 
+    void addDefaultPath(defaultPath) {
+        def applicationContext = grailsApplication.parentContext
+
+        if(!(defaultPath instanceof List)) {
+            defaultPath = [defaultPath]
+        }
+        int order = 1
+        for(path in defaultPath) {
+            def importPath = applicationContext.getResource(path)?.file?.absolutePath
+            if (importPath) {
+                log.debug "Adding default import path [${importPath}][order: ${order}]"
+                if(! paths.find{it.path == importPath}) {
+                    paths << [path: importPath, order: order++]
+                }
+            }
+        }
+        paths.sort {it.order}
+    }
 }
