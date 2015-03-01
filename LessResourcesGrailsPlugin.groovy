@@ -2,7 +2,7 @@ import org.grails.plugin.resource.CSSPreprocessorResourceMapper
 import org.grails.plugin.resource.CSSRewriterResourceMapper
 
 class LessResourcesGrailsPlugin {
-    def version = "1.3.3.1"
+    def version = "1.3.3.3"
     def grailsVersion = "2.0 > *"
 
     def author = "Karol Balejko"

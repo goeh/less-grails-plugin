@@ -8,7 +8,7 @@ class LessCompilerService {
     def grailsApplication
 
     private String loadResource(name) {
-        grailsApplication.parentContext.getResource("classpath:${name}").file.text
+        grailsApplication.mainContext.getResource("classpath:${name}").file.text
     }
 
     def compile(source, target, paths = []) {

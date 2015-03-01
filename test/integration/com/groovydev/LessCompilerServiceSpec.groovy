@@ -1,11 +1,10 @@
 package com.groovydev
 
-import grails.plugin.spock.IntegrationSpec
+import grails.test.spock.IntegrationSpec
 import spock.lang.Unroll
 
 class LessCompilerServiceSpec extends IntegrationSpec {
 
-    def grailsApplication
     def lessCompilerService
 
     @Unroll
@@ -13,8 +12,8 @@ class LessCompilerServiceSpec extends IntegrationSpec {
         when:
         def tmpTarget = File.createTempFile("LessCompilerServiceSpec", ".css")
         tmpTarget.deleteOnExit()
-        def srcFile = grailsApplication.parentContext.getResource(srcLessFile)?.file
-        def modelFile = grailsApplication.parentContext.getResource(modelCssFile)?.file
+        def srcFile = new File("test/integration", srcLessFile)
+        def modelFile = new File("test/integration", modelCssFile)
         def importPath = srcFile?.parentFile?.absolutePath
         lessCompilerService.compile(srcFile, tmpTarget, [importPath])
 
